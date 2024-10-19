@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row content-md-center">
+        <!-- Columna con datos de perfil -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-body">
+                <h3 class="card-title">Datos de perfil</h3>
+                <div class="row content-md-center">
+                    <div class="col">
+                        <div class="row justify-content-md-center pb-2">
+                            <div class="col-md-auto">
+                                <p>Foto de perfil</p>
+                                <img src="https://w7.pngwing.com/pngs/152/932/png-transparent-silhouette-person-graphy-silhouette-animals-rectangle-photography.png" alt="Foto de perfil" style="width: 300px; height: 300px; border-radius: 50%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        {% if usuario %}
+                        <p class="text-secondary-emphasis">Nombre</p>
+                        <p class="text-secondary">{{usuario[0]}}</p>
+                        <p class="text-secondary-emphasis">Apellido</p>
+                        <p class="text-secondary">{{usuario[1]}}</p>
+                        <p class="text-secondary-emphasis">Correo institucional</p>
+                        <p class="text-secondary">{{usuario[2]}}</p>
+                        {% else %}
+                        <p class="text-warning">No hay datos registrados</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna con registro de publicaciones y sesiones -->
+        <div class="col-md-8">
+            <!-- Registro de publicaciones -->
+            <div class="card card-body mb-4">
+                <h3 class="card-title">Registro de publicaciones</h3>
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Contenido</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if publicaciones %}
+                        {% for publicacion in publicaciones %}
+                        <tr class="table-light">
+                            <td>{{publicacion[0]}}</td>
+                            <td>{{publicacion[1]}}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr class="table-light">
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <!-- Enviar mensaje directo -->
+            <div class="card card-body mb-4">
+                <h3 class="card-title">Enviar un mensaje directo</h3>
+                <form action="/mensajes/enviar" method="POST">
+                    <div class="form-group">
+                        <label for="correo_receptor">Correo del destinatario:</label>
+                        <input type="email" id="correo_receptor" name="correo_receptor" class="form-control" placeholder="Correo del destinatario" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contenido">Mensaje:</label>
+                        <textarea id="contenido" name="contenido" class="form-control" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar mensaje</button>
+                </form>
+            </div>
+
+            <!-- Mensajes recibidos -->
+            <div class="card card-body mb-4">
+                <h3 class="card-title">Mensajes recibidos</h3>
+                {% if mensajes %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Mensaje</th>
+                            <th scope="col">De</th>
+                            <th scope="col">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mensaje in mensajes %}
+                        <tr class="table-light">
+                            <td>{{ mensaje[0] }}</td>
+                            <td>{{ mensaje[1] }} {{ mensaje[2] }}</td>
+                            <td>{{ mensaje[3] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="alert alert-warning">
+                    No has recibido mensajes directos.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
